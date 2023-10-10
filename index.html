@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="STOPNet: Multiview-based 6-DoF Suction Detection for Transparent Objects on Production Lines">
+  <meta name="keywords" content="Deep Learning in Grasping and Manipulation; Perception for
+  Grasping and Manipulation; Computer Vision for Automation">
+  <meta name="profile" content="Autonomy for Mobility and Manipulation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>STOPNet: Multiview-based 6-DoF Suction Detection for Transparent Objects on Production Lines</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title"><font color="#1590d1">STOP</font>Net: Multiview-based 6-DoF <font color="#1590d1">S</font>uction Detection for <font color="#1590d1">T</font>ransparent <font color="#1590d1">O</font>bjects on <font color="#1590d1">P</font>roduction Lines</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://yxKryptonite.github.io/">Yuxuan Kuang</a><sup>1,2*</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              Qin Han<sup>1*</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              Danshi Li<sup>2,3</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <a href="https://daiqy.github.io/">Qiyu Dai</a><sup>1</sup><br />
+              Lian Ding<sup>4</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              Dong Sun<sup>4</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              Hanlin Zhao</a><sup>4</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <a href="https://hughw19.github.io/">He Wang</a><sup>1&dagger;</sup>
+              <br />
+              <sup>1</sup>CFCS, School of Computer Science, Peking University&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+              <sup>2</sup>Galbot&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <sup>3</sup>New York University&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+              <sup>4</sup>Huawei Cloud Computing Technologies Co., Ltd.
+
+              <span class="brmod">Under Review</span>
+            </span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2310.05717.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href="#method_video"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fa fa-video"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (coming soon)</span>
+                </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="hero-body">
+    <div class="columns is-centered">
+      <div class="column is-9">
+        <div class="columns is-centered has-text-centered">
+          <img src="./resources/fig-2-teaser-2.png" alt="pipeline" width="50%">
+        </div>
+        <h2 class="subtitle has-text-centered">
+          Overview of our production line real robot setup and our proposed STOPNet. Taking multi-timestep RGB input from two cameras, our framework conducts 3D scene reconstruction and suction detection in real time. Our model is trained on a large-scale synthetic dataset but it can also generalize to real-world objects and environments effectively.</strong>
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-two-thirds">
+        <h2 class="title is-2">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            In this work, we present STOPNet, a framework for 6-DoF object suction detection on production lines, with a focus on but not limited to transparent objects, which is an important and challenging problem in robotic systems and modern industry. Current methods requiring depth input fail on transparent objects due to depth cameras' deficiency in sensing their geometry, while we proposed a novel framework to reconstruct the scene on the production line depending only on RGB input, based on multiview stereo. Compared to existing works, our method not only reconstructs the whole 3D scene in order to obtain high-quality 6-DoF suction poses in real time but also generalizes to novel environments, novel arrangements and novel objects, including challenging transparent objects, both in simulation and the real world. Extensive experiments in simulation and the real world show that our method significantly surpasses the baselines and has better generalizability, which caters to practical industrial needs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Abstract. -->
+
+  <!-- Paper video. -->
+  <br/>
+  <br/>
+  <div id="method_video" class="columns is-centered has-text-centered">
+    <div class="column is-two-thirds">
+      <h2 class="title is-2">Video</h2>
+      <div class="publication-video">
+        <video controls>
+          <source src="./resources/ICRA24_3384_VI_i.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <!--/ Paper video. -->
+</section>
+
+<!-- <section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-2" style="text-align: center;">Gait Transition via a Velocity-Conditioned Policy</h2>
+        <tr>
+          <td>
+            <br>
+            <div class="columns is-centered has-text-centered">
+              <video autoplay loop muted playsinline src="./resources/gait_transition.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 80%;"></video>
+            </div>
+          </td>
+        </tr>
+      </div> 
+    </div>
+
+    <br><br>
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-2" style="text-align: center;">Similar Energy Consumption Trend<br \>between Our Robot and Horses</h2>
+        
+        <div class="is-vcentered interpolation-panel">
+          <div class="content has-text-centered">
+            <img style="border: 1px solid #bbb; border-radius: 10px; width: 36.75%;" src="./resources/horse.png">&nbsp;&nbsp;&nbsp;&nbsp;<img style="border: 1px solid #bbb; border-radius: 10px; width: 40%;" src="./resources/mpc_energy.png">
+          </div>
+          <div class="content has-text-centered">
+            <p>
+              In Biomechanics, Froude number is a metric characterizing gaits of quadrupeds and bipeds. Animals with a similar morphology but with different sizes tend to use the same gait when moving with equal Froude numbers. Our robot has similar Froude numbers as horses and sheep. The plot on the left <strong>(Hoyt et al. 1981)</strong> analyzes the energy consumption of different horse gaits across different speeds. Shown on the right, the energy consumption plot of our robot has a similar trend, which also validates certain gaits will emerge at certain speeds if we minimize the energy consumption. 
+            </p>
+          </div>
+        </div>
+        <br>
+        <div class="is-vcentered interpolation-panel">
+          <div class="content has-text-centered">
+            <video autoplay loop muted playsinline src="./resources/gait_comparison.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 80%;"></video>
+          </div>
+          <div class="content has-text-centered">
+            <p>
+              Foot Contact Plots of Walking, Trotting, Bouncing (Galloping)
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <br><br>
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-2" style="text-align: center;">More Examples of Emergent Structured Gaits <br> (Walk, Trot & Bounce)</h2>
+        <tr>
+          <td>
+            <br><h3 class="title is-4">Walking Gait (0.375 m/s): </h3><br>
+              <div class="columns is-centered has-text-centered">
+                <video autoplay loop muted playsinline src="./resources/walk_trench.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 33%;"></video>
+                &nbsp;
+                <video autoplay loop muted playsinline src="./resources/walk_payload.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 33%;"></video>
+                &nbsp;
+                <video autoplay loop muted playsinline src="./resources/walk_brush.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 33%;"></video>
+              </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <br><h3 class="title is-4">Trotting Gait (0.9 m/s): </h3><br>
+              <div class="columns is-centered has-text-centered">
+                <video autoplay loop muted playsinline src="./resources/trot_trench.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 33%;"></video>
+                &nbsp;
+                <video autoplay loop muted playsinline src="./resources/trot_payload.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 33%;"></video>
+                &nbsp;
+                <video autoplay loop muted playsinline src="./resources/trot_brush.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 33%;"></video>
+              </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <br><h3 class="title is-4">Bouncing (Galloping) Gait (1.5 m/s): </h3><br>
+              <div class="columns is-centered has-text-centered">
+                <video autoplay loop muted playsinline src="./resources/bounce_pull.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 50%;"></video>
+                &nbsp;
+                <video autoplay loop muted playsinline src="./resources/bounce_pull_slomo.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 50%;"></video>
+              </div>
+              <br />
+              <div class="columns is-centered has-text-centered">
+                <video autoplay loop muted playsinline src="./resources/bounce_slomo.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 50%;"></video>
+                &nbsp;
+                <video autoplay loop muted playsinline src="./resources/bounce_trench.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 50%;"></video>
+              </div>
+          </td>
+        </tr>
+
+        <br/>
+      </div>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-2" style="text-align: center;">Emergent Unstructured Gaits</h2>
+        <tr>
+          <td>
+            <br>
+              <div class="columns is-centered has-text-centered v-divider">
+                <video autoplay loop muted playsinline src="./resources/rocky.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 50%;"></video>
+                &nbsp;
+                <video autoplay loop muted playsinline src="./resources/plank.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 50%;"></video>
+              </div>
+              <br />              
+              <div class="columns is-centered has-text-centered v-divider">
+                <video autoplay loop muted playsinline src="./resources/unstructured-indoor-1.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 50%;"></video>
+                &nbsp;
+                <video autoplay loop muted playsinline src="./resources/unstructured-indoor-2.mp4" style="border: 1px solid #bbb; border-radius: 10px; width: 50%;"></video>
+              </div>
+          </td>
+        </tr>
+      </div> 
+    </div>
+
+    <br><br>
+  </div>
+</section> -->
+
+<!-- <section class="section">
+  <div class="columns is-centered">
+    <div class="column is-full-width">
+      <div class="is-vcentered interpolation-panel">
+        <h2 class="title is-2" style="text-align: center;">Related Work</h2>
+        <div class="content is-centered has-text-centered">
+          This work is part of our series of research on learning based control of legged robots. Please check out other works below. 
+        </div>
+        <br><br>
+        <div class="container">
+          <div class="subtitle is-centered">
+            <table width="100%">
+              <tr>
+                <td width="100%">
+                <div style="float:left;margin-right:30px;margin-left:30px;">
+                <video autoplay loop muted src="resources/rma-clip.mp4" width="400"></video>
+                </div>
+                RMA: Rapid Motor Adaptation for Legged Robots <br/>
+                Ashish Kumar, Zipeng Fu, Deepak Pathak, Jitendra Malik <br/>
+                RSS 2021 <br/> <br/> <br/> 
+                <a href="https://ashish-kmr.github.io/rma-legged-robots/rma-locomotion-final.pdf">PDF</a> | 
+                <a href="https://www.youtube.com/watch?v=nBy1piJrq1A">Video</a> |
+                <a href="https://ashish-kmr.github.io/rma-legged-robots/">Project Page</a> 
+              </tr>
+            </table>
+          </div>
+          <div class="subtitle is-centered">
+            <table width="100%">
+              <tr>
+                <td width="100%">
+                  <div style="float:left;margin-right:30px;margin-left:30px;">
+                  <video autoplay loop muted src="resources/nav-clip.mp4" width="400"></video>
+                  </div>
+                  Coupling Vision and Proprioception for Navigation of Legged Robots <br/>
+                  Zipeng Fu*, Ashish Kumar*, Ananye Agarwal, Haozhi Qi, Jitendra Malik, Deepak Pathak <br/>
+                  CVPR 2022 <br/> <br/> <br/>
+                  <a href="https://navigation-locomotion.github.io/camera-ready/resources/navigation-locomotion.pdf">PDF</a> | 
+                  <a href="https://www.youtube.com/watch?v=sZVvutQUAQ4">Video</a> |
+                  <a href="https://navigation-locomotion.github.io/">Project Page</a> 
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+<section class="section" id="BibTeX">
+  <div class="container content">
+    <h2 class="titile">BibTeX</h2>
+    <pre><code>@misc{kuang2023stopnet,
+      title={STOPNet: Multiview-based 6-DoF Suction Detection for Transparent Objects on Production Lines}, 
+      author={Yuxuan Kuang and Qin Han and Danshi Li and Qiyu Dai and Lian Ding and Dong Sun and Hanlin Zhao and He Wang},
+      year={2023},
+      eprint={2310.05717},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO}
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a href="https://arxiv.org/pdf/2310.05717.pdf" class="large-font bottom_buttons">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <!-- <a class="large-font bottom_buttons" disabled>
+        <i class="fab fa-github"></i>
+      </a> -->
+      <br />
+      <p>Page template borrowed from <a href="https://worldsheet.github.io/"><span class="dnerf">Worldsheet</span></a> and <a href="https://nerfies.github.io/"><span class="dnerf">Nerfies</span></a>.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
